@@ -1,88 +1,91 @@
-//added C++ template
 #include <iostream>
 using namespace std;
 
-// Created class anmed Node to create nodes with data and pointer for linked lists
+// Created class named Node to create nodes with data and pointers for doubly linked list
 class Node {
-  public:
+public:
     int data;
     Node *next;
+    Node *prev;
 
     // Default constructor
     Node() {
         data = 0;
         next = NULL;
+        prev = NULL;
     }
 
-    // Parameterised Constructor
+    // Parameterized Constructor
     Node(int data) {
         this->data = data;
         this->next = NULL;
+        this->prev = NULL;
     }
 };
 
-// created a linked list class to add a linked list
-class Linkedlist {
+// Created a doubly linked list class
+class DoublyLinkedList {
     Node *head;
-  public:
+public:
     // Default constructor
-    Linkedlist() {
+    DoublyLinkedList() {
         head = NULL;
     }
 
-    // Function to insert a node at the start of the
-    // linked list
+    // Function to insert a node at the start of the doubly linked list
     void insertAtHead(int data) {
-
         // Create the new Node
         Node *newNode = new Node(data);
 
-        // Assign to head of the list is empty
+        // Assign to head if the list is empty
         if (head == NULL) {
             head = newNode;
             return;
         }
 
-        // Insert the newly created linked list at the head
-        newNode->next = this->head;
-        this->head = newNode;
+        // Insert the new node at the head
+        newNode->next = head;
+        head->prev = newNode; // Set previous pointer of existing head
+        head = newNode;
     }
 
-    // Function to print the linked list.
+    // Function to print the doubly linked list
     void print() {
         Node *temp = head;
 
         // Check for empty list
         if (head == NULL) {
-            cout << "List empty" << endl;
+            cout << "List is empty" << endl;
             return;
         }
 
-        // Traverse the list
+        // Traverse and print the list
         while (temp != NULL) {
             cout << temp->data << " ";
             temp = temp->next;
         }
-    
+        cout << endl;
     }
-    //function to deleted linked list by first deleting nodes and transvering ahead
+
+    // Function to delete the entire linked list
     void deleteList() {
-            Node *current = head;
-            Node *nextNode;
-            while (current != NULL) {
-                nextNode = current->next;
-                delete current;
-                current = nextNode;
-            }
-            head = NULL;
-            cout << "Linked list deleted." << endl;
+        Node *current = head;
+        Node *nextNode;
+
+        while (current != NULL) {
+            nextNode = current->next;
+            delete current;
+            current = nextNode;
         }
+
+        head = NULL;
+        cout << "Doubly linked list deleted." << endl;
+    }
 };
 
 int main() {
-
-    // Creating a LinkedList object
-    Linkedlist list;
+    // Creating a DoublyLinkedList object
+    DoublyLinkedList list;
 
     // Inserting nodes
     list.insertAtHead(4);
@@ -90,16 +93,12 @@ int main() {
     list.insertAtHead(2);
     list.insertAtHead(1);
 
-    cout << "Elements of the list are: ";
+    cout << "Elements of the list: ";
+    list.print(); // Print the list
 
-    // Print the list
-    list.print();
-    cout << endl;
-    
+    // Deleting the list
     list.deleteList();
-    
-    
-
 
     return 0;
 }
+
